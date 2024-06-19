@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: left; /* Align text content to the left within the container */
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+        }
+
+        nav ul li a.btn {
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        main {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .main-title {
+            margin-bottom: 20px; /* Reduced margin for better alignment */
+            font-size: 3em;
+            text-align: center;
+        }
+
+        .pdf-container {
+            background-color: #f8f9fa;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 1200px; /* Adjusted for better visibility */
+        }
+
+
+        .pdf-container h3 {
+            font-size: 2em;
+            margin-bottom: 10px; /* Adjusted margin for better spacing */
+            display: inline-block; /* Ensure title and button stay inline */
+        }
+
+        .pdf-container .pdf-description {
+            font-size: 1em;
+            margin-top: 10px; /* Added margin to separate content */
+        }
+
+        .pdf-container a.btn {
+            background-color: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: 20px; /* Added margin between title and button */
+        }
+
+        /* End of additional styling */
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Worm</title>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="logo">Company Logo</div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/download}" class="btn">Download</a></li>
+                <li>   </li>
+                <li><span sec:authorize="isAuthenticated"><a th:href="@{/logout}" class="btn">Logout</a></span></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <h1 class="main-title">Book Worm</h1>
+        <!-- Modify the Thymeleaf loop to create individual PDF containers -->
+        <div th:each="dataset : ${datasets}" class="pdf-container">
+            <h3 th:text="${dataset.pdfName}">PDF Title</h3>
+            <a th:href="${dataset.pdfUrl}" class="btn" target="_blank">View</a>
+            <p class="pdf-description" th:text="${dataset.description}">PDF Description</p>
+        </div>
+        <!-- End of modified loop -->
+    </div>
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            fetch('/download')
+                .then(response => response.json())
+                .then(data => alert('Email sent successfully!'))
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</main>
+</body>
+</html>

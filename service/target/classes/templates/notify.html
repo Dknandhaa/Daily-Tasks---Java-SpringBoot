@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Status</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Your other content goes here -->
+</div>
+
+<!-- Notification Container -->
+<div id="notification-container" class="notification"></div>
+
+<script>
+    function showNotification(message, type) {
+        const notificationContainer = document.getElementById('notification-container');
+        const alertType = type === 'success' ? 'alert-success' : 'alert-danger';
+        notificationContainer.innerHTML = `
+            <div class="alert ${alertType}" role="alert">
+                ${message}
+            </div>
+        `;
+
+    }
+
+    setTimeout(() => {
+        showNotification('Email sent successfully.', 'success');
+    });
+
+</script>
+</body>
+</html>
