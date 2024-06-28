@@ -3,6 +3,7 @@ package com.app.bank.controller;
 import com.app.bank.service.AccountService;
 import com.app.bank.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Account getAccount(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
+    public Account getAccount(@PathVariable Long id) {
         return accountService.getAccount(id).orElseThrow(() -> new RuntimeException("Account not found"));
     }
 
@@ -35,9 +36,15 @@ public class AccountController {
         return accountService.withdraw(id, amount);
     }
 
-    @GetMapping("/interest")
-    public double interest(){
-        return accountService.interest();
+    @GetMapping("/rate")
+    public double rateOfInterest(){
+        return accountService.rateOfInterest();
     }
 
+    @GetMapping("/{id}/interestAmount")
+    public ResponseEntity<String> InterestAmount(@PathVariable Long id){
+        double amount;
+        amount = (getAccount(id).getBalance()*accountService.rateOfInterest()*1)/100;
+        return ResponseEntity.ok("The interest ammount for the time being is " + amount);
+    }
 }
